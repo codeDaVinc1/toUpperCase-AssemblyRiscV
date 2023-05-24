@@ -1,0 +1,43 @@
+.data
+stringa: .string "TrasFORMARMI in UPPer CasE"
+
+.text
+
+
+#azzero un contatore
+li t0, 0
+la t1, stringa
+# registro in cui viene inserito output? a0
+
+while:
+    lb t2, (0)t1
+    addi t3, t2, 0 # conservo il valore del carattere
+    
+    # se il valore non è compreso in un range, cioè è maiuscolo, salto
+    li t4, 97
+    blt t2, t4, fine_ifs # si suppone che caratteri accettati siano solo quelli di alfabeto
+    addi t2, t2, -32
+    sb t2, (0)t1
+    
+    fine_ifs:
+    addi t1, t1, 1 # mi sposto sempre di un byte
+    beq t3, zero, fine_while
+    j while
+    
+fine_while:
+
+# scorro l'array risultante
+li t0, 0
+li a7, 11
+la t1, stringa
+for:
+    lb a0, (0)t1
+    ecall
+    addi t1, t1, 1 
+    beq a0, zero, fine_for 
+    j for
+fine_for: 
+    
+li t0, 0
+li a7, 10 
+ecall 
